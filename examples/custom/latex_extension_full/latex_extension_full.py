@@ -5,13 +5,12 @@ from scipy.special import jv
 
 from bokeh.ext import build
 from bokeh.palettes import Spectral4
-from bokeh.plotting import figure, output_file, show
+from bokeh.plotting import figure
+from bokeh.io import curdoc
 from latex_label import LatexLabel
 
 if not build("latex_label"):
     raise RuntimeError("unable to build latex_label extension")
-
-output_file('latex_extension.html')
 
 p = figure(title="LaTex Extension Demonstration", plot_width=800, plot_height=350,
            background_fill_color="#fafafa")
@@ -34,4 +33,4 @@ latex = LatexLabel(text=text, x=4.5, y=250,
                    background_fill_color="white", border_line_color="lightgrey")
 p.add_layout(latex)
 
-show(p)
+curdoc().add_root(p)
