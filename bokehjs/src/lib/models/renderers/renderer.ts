@@ -60,6 +60,10 @@ export abstract class RendererView extends View {
     this.plot_view.request_render()
   }
 
+  request_paint(): void {
+    this.plot_view.request_paint()
+  }
+
   notify_finished(): void {
     this.plot_view.notify_finished()
   }
