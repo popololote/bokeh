@@ -93,7 +93,7 @@ export class TitleView extends TextAnnotationView {
     else {
       this.visuals.text.set_value(this.layer.ctx)
       const {width, ascent} = this.layer.ctx.measureText(text)
-      return {width, height: ascent * this.visuals.text.text_line_height.value() + 10}
+      return {width, height: ascent * this.model.text_line_height + 10}
     }
   }
 }
