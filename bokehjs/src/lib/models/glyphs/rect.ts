@@ -53,20 +53,28 @@ export class RectView extends CenterRotatableView {
   protected _render(ctx: Context2d, indices: number[], {sx, sy, sx0, sy1, sw, sh, _angle}: RectData): void {
     if (this.visuals.fill.doit) {
       for (const i of indices) {
-        if (isNaN(sx[i] + sy[i] + sx0[i] + sy1[i] + sw[i] + sh[i] + _angle[i]))
+        const sx_i = sx[i]
+        const sy_i = sy[i]
+        const sx0_i = sx0[i]
+        const sy1_i = sy1[i]
+        const sw_i = sw[i]
+        const sh_i = sh[i]
+        const angle_i = _angle[i]
+
+        if (isNaN(sx_i + sy_i + sx0_i + sy1_i + sw_i + sh_i + angle_i))
           continue
 
         //no need to test the return value, we call fillRect for every glyph anyway
         this.visuals.fill.set_vectorize(ctx, i)
 
-        if (_angle[i]) {
-          ctx.translate(sx[i], sy[i])
-          ctx.rotate(_angle[i])
-          ctx.fillRect(-sw[i]/2, -sh[i]/2, sw[i], sh[i])
-          ctx.rotate(-_angle[i])
-          ctx.translate(-sx[i], -sy[i])
+        if (angle_i) {
+          ctx.translate(sx_i, sy_i)
+          ctx.rotate(angle_i)
+          ctx.fillRect(-sw_i/2, -sh_i/2, sw_i, sh_i)
+          ctx.rotate(-angle_i)
+          ctx.translate(-sx_i, -sy_i)
         } else
-          ctx.fillRect(sx0[i], sy1[i], sw[i], sh[i])
+          ctx.fillRect(sx0_i, sy1_i, sw_i, sh_i)
       }
     }
 
@@ -74,23 +82,31 @@ export class RectView extends CenterRotatableView {
       ctx.beginPath()
 
       for (const i of indices) {
-        if (isNaN(sx[i] + sy[i] + sx0[i] + sy1[i] + sw[i] + sh[i] + _angle[i]))
+        const sx_i = sx[i]
+        const sy_i = sy[i]
+        const sx0_i = sx0[i]
+        const sy1_i = sy1[i]
+        const sw_i = sw[i]
+        const sh_i = sh[i]
+        const angle_i = _angle[i]
+
+        if (isNaN(sx_i + sy_i + sx0_i + sy1_i + sw_i + sh_i + angle_i))
           continue
 
         // fillRect does not fill zero-height or -width rects, but rect(...)
         // does seem to stroke them (1px wide or tall). Explicitly ignore rects
         // with zero width or height to be consistent
-        if (sw[i] == 0 || sh[i] == 0)
+        if (sw_i == 0 || sh_i == 0)
           continue
 
-        if (_angle[i]) {
-          ctx.translate(sx[i], sy[i])
-          ctx.rotate(_angle[i])
-          ctx.rect(-sw[i]/2, -sh[i]/2, sw[i], sh[i])
-          ctx.rotate(-_angle[i])
-          ctx.translate(-sx[i], -sy[i])
+        if (angle_i) {
+          ctx.translate(sx_i, sy_i)
+          ctx.rotate(angle_i)
+          ctx.rect(-sw_i/2, -sh_i/2, sw_i, sh_i)
+          ctx.rotate(-angle_i)
+          ctx.translate(-sx_i, -sy_i)
         } else
-          ctx.rect(sx0[i], sy1[i], sw[i], sh[i])
+          ctx.rect(sx0_i, sy1_i, sw_i, sh_i)
 
         this.visuals.line.set_vectorize(ctx, i)
         ctx.stroke()
