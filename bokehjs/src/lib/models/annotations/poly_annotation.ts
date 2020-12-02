@@ -75,9 +75,9 @@ export namespace PolyAnnotation {
     screen: p.Property<boolean>
   } & Mixins
 
-  export type Mixins = mixins.Line/*Scalar*/ & mixins.Fill/*Scalar*/
+  export type Mixins = mixins.LineScalar & mixins.FillScalar
 
-  export type Visuals = Annotation.Visuals & {line: visuals.Line/*Scalar*/, fill: visuals.Fill/*Scalar*/}
+  export type Visuals = Annotation.Visuals & {line: visuals.LineScalar, fill: visuals.FillScalar}
 }
 
 export interface PolyAnnotation extends PolyAnnotation.Attrs {}
@@ -95,7 +95,7 @@ export class PolyAnnotation extends Annotation {
   static init_PolyAnnotation(): void {
     this.prototype.default_view = PolyAnnotationView
 
-    this.mixins<PolyAnnotation.Mixins>([mixins.Line/*Scalar*/, mixins.Fill/*Scalar*/])
+    this.mixins<PolyAnnotation.Mixins>([mixins.LineScalar, mixins.FillScalar])
 
     this.define<PolyAnnotation.Props>(({Number, Array}) => ({
       xs:           [ Array(Number), [] ],
