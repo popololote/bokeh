@@ -2,7 +2,7 @@ import {EllipseOval, EllipseOvalView, EllipseOvalData} from "./ellipse_oval"
 import {LineVector, FillVector} from "core/property_mixins"
 import * as p from "core/properties"
 
-export interface EllipseData extends EllipseOvalData {}
+export type EllipseData = EllipseOvalData
 
 export interface EllipseView extends EllipseData {}
 
