@@ -1,18 +1,12 @@
 import {TextAnnotation, TextAnnotationView} from "./text_annotation"
-import {FontStyle, VerticalAlign, TextAlign, TextBaseline} from "core/enums"
+import {VerticalAlign, TextAlign} from "core/enums"
 import {Size} from "core/layout"
-import * as visuals from "core/visuals"
 import * as mixins from "core/property_mixins"
 import * as p from "core/properties"
 
 export class TitleView extends TextAnnotationView {
   model: Title
   visuals: Title.Visuals
-
-  initialize(): void {
-    super.initialize()
-    this.visuals.text = new visuals.Text(this)
-  }
 
   protected _get_location(): [number, number] {
     const panel = this.panel!
@@ -103,20 +97,13 @@ export namespace Title {
 
   export type Props = TextAnnotation.Props & {
     text: p.Property<string>
-    text_font: p.Property<string>
-    text_font_size: p.StringSpec
-    text_font_style: p.Property<FontStyle>
-    text_color: p.ColorSpec
-    text_alpha: p.NumberSpec
-    text_line_height: p.Property<number>
     vertical_align: p.Property<VerticalAlign>
     align: p.Property<TextAlign>
     offset: p.Property<number>
-    text_align: p.Property<TextAlign>
-    text_baseline: p.Property<TextBaseline>
   } & Mixins
 
   export type Mixins =
+    mixins.Text           &
     mixins.BorderLine     &
     mixins.BackgroundFill
 
@@ -137,29 +124,25 @@ export class Title extends TextAnnotation {
     this.prototype.default_view = TitleView
 
     this.mixins<Title.Mixins>([
+      mixins.Text,
       ["border_",     mixins.Line],
       ["background_", mixins.Fill],
     ])
 
     this.define<Title.Props>(({Number, String}) => ({
       text:             [ String ],
-      text_font:        [ p.Font, "helvetica" ],
-      text_font_size:   [ p.StringSpec, "13px" ],
-      text_font_style:  [ FontStyle, "bold" ],
-      text_color:       [ p.ColorSpec, "#444444" ],
-      text_alpha:       [ p.NumberSpec, 1.0 ],
-      text_line_height: [ Number, 1.0 ],
       vertical_align:   [ VerticalAlign, "bottom" ],
       align:            [ TextAlign, "left" ],
       offset:           [ Number, 0 ],
     }))
 
-    this.internal<Title.Props>(() => ({
-      text_align:    [ TextAlign, "left" ],
-      text_baseline: [ TextBaseline, "bottom" ],
-    }))
+    this.prototype._props.text_align.options.internal = true
+    this.prototype._props.text_baseline.options.internal = true
 
     this.override<Title.Props>({
+      text_font_size: "13px",
+      text_font_style: "bold",
+      text_line_height: 1.0,
       background_fill_color: null,
       border_line_color: null,
     })
